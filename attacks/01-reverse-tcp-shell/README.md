@@ -67,7 +67,7 @@ index=main source="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCod
 ### Event ID 1 - Meterpreter Spawns cmd.exe
 **Query:**
 ```
-index=main source="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=1 "resume4.pdf.exe"
+index=main source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=1 "resume4.pdf.exe"
 ```
 **What it shows:**
 - `cmd.exe` spawned with parent process `resume4.pdf.exe`
@@ -79,7 +79,7 @@ index=main source="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCod
 ### Event ID 3 - Outbound Network Connection
 **Query:**
 ```
-index=main source="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=3 DestinationPort=4444
+index=main source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=3 DestinationPort=4444
 ```
 **What it shows:**
 - `resume4.pdf.exe` initiates a TCP connection to `192.168.56.104` on port `4444`
