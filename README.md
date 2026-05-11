@@ -18,4 +18,5 @@ Sysmon and Splunk. Each entry covers an attack simulation and detection.
 | # | Attack | Tools Used | Status |
 |---|--------|------------|--------|
 | 01 | Reverse TCP Shell | Kali, Metasploit, msfvenom | Complete
+| 02 | RDP Brute Force & AD Attack | Crowbar, xfreerdp, Atomic Red Team | Complete
 
