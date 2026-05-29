@@ -2,7 +2,7 @@
  
 These rules were authored based on confirmed attack behavior identified during hands-on home lab simulations. Each rule targets a behavioral indicator observed during the attack rather than static IOCs like filenames or IP addresses, making them resilient to attacker modifications between campaigns.
  
-All rules follow the [Sigma specification](https://github.com/SigmaHQ/sigma) and can be converted to Splunk SPL, Microsoft Sentinel KQL, or any other SIEM query language using [sigmac](https://github.com/SigmaHQ/sigma/tree/master/tools) or [pySigma](https://github.com/SigmaHQ/pySigma).
+**All rules follow the [Sigma specification](https://github.com/SigmaHQ/sigma) and can be converted to Splunk SPL, Microsoft Sentinel KQL, or any other SIEM query language using [sigmac](https://github.com/SigmaHQ/sigma/tree/master/tools) or [pySigma](https://github.com/SigmaHQ/pySigma).**
  
 ---
 <br>
