@@ -76,7 +76,6 @@ What it shows:
 ![Event ID 4625 - Failed Logins](screenshots/event-id-4625-failed-logins.png)
 
 <br> 
-<br> 
 
 ### RDP Brute Force - Successful Login
 Query: index=endpoint EventCode=4624 jsmart
