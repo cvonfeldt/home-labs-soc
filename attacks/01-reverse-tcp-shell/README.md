@@ -47,6 +47,7 @@ exploit
 On the Windows 10 VM, download and run `resume4.pdf.exe` from the browser or file explorer. Once executed, a Meterpreter session opens on the attacker's machine.
 
 ---
+<br>
 
 ## Detection
 
