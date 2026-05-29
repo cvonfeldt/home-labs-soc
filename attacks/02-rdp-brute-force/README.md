@@ -13,6 +13,8 @@ This documents a simulated RDP brute force attack against a domain-joined Window
 | SIEM | Ubuntu 22.04 (Splunk) | 192.168.10.10 |
 
 **Tools Used:** Crowbar, xfreerdp, Splunk Enterprise, Splunk Universal Forwarder, Sysmon (Olaf Hartong config), Atomic Red Team, Invoke-AtomicRedTeam
+---
+<br> 
 
 ## Attack Steps
 
@@ -51,6 +53,8 @@ Installed Invoke-AtomicRedTeam on Windows 10 and ran the following MITRE ATT&CK 
 - **T1059.001** - PowerShell Command Execution: simulated malicious PowerShell activity
 
 ![Atomic Red Team T1136.001 Running](screenshots/atomic-red-team-t1136.png)
+---
+<br> 
 
 ## Detection
 
@@ -63,6 +67,8 @@ What it shows:
 
 ![Event ID 4625 - Failed Logins](screenshots/event-id-4625-failed-logins.png)
 
+<br> 
+<br> 
 
 ### RDP Brute Force - Successful Login
 Query: index=endpoint EventCode=4624 jsmart
@@ -73,6 +79,8 @@ What it shows:
 - Logon Type 10 confirms Remote Interactive (RDP) session established
 
 ![Event ID 4624 - Successful Login](screenshots/event-id-4624-successful-login.png)
+<br> 
+<br> 
 
 ### Atomic Red Team - User Account Created
 Query: index=endpoint EventCode=4720
@@ -83,6 +91,8 @@ What it shows:
 - Account was added to Administrators group — privilege escalation indicator
 
 ![Event ID 4720 - User Created](screenshots/event-id-4720-user-created.png)
+<br> 
+<br> 
 
 ### Atomic Red Team - PowerShell Execution
 Query: index=endpoint source="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
@@ -92,7 +102,8 @@ What it shows:
 - Suspicious PowerShell activity logged even when Windows Defender blocked execution
 
 ![Sysmon - PowerShell Execution](screenshots/sysmon-powershell.png)
-
+<br> 
+<br> 
 
 ## MITRE ATT&CK Mapping
 
@@ -103,6 +114,8 @@ What it shows:
 | T1136.001 | Create Local Account | Persistence | New local account NewLocalUser created post-compromise via Atomic Red Team T1136.001 - confirmed in Event ID 4720 |
 | T1098 | Account Manipulation | Privilege Escalation | NewLocalUser added to Administrators group post-creation - confirmed via Event ID 4732 |
 
+<br> 
+
 ## Key Indicators of Compromise (IOCs)
 
 | Indicator | Value |
@@ -112,6 +125,8 @@ What it shows:
 | Protocol | RDP (Port 3389) |
 | Targeted user | mydfir\jsmart |
 | Backdoor account | NewLocalUser |
+
+<br> 
 
 ## Detection Summary
 Splunk captured the full attack chain:
