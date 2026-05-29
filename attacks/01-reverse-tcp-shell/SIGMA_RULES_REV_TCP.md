@@ -8,7 +8,9 @@ These rules were authored based on confirmed attack behavior identified during h
 <br>
 
 ## Rule 1 - Executable Spawning Command Shell from User-Writable Directory
- 
+
+**Investigation:** Meterpreter Reverse TCP Shell (Home Lab - 01)
+
 **What it detects:** An executable running from a user-writable directory (`Downloads`, `AppData`, `Temp`) spawning `cmd.exe` as a child process. In the Meterpreter investigation, `resume4.pdf.exe` executed from `C:\Users\chan\Downloads\` and immediately spawned `cmd.exe` to establish the reverse shell session.
  
 **Why it's evasion-resistant:** An attacker can rename their payload to anything, but they cannot avoid the parent-child relationship that appears when a Meterpreter palyoad executes. A legitimate file downloaded by a user - a PDF, an image, a document - has no reason to ever spawn a command interpreter. This relationship is anomalous regardless of what the file is named or where it came from. The user-writable directory filter also eliminates most false positives since legitimate software typically executes from `Program Files` or `Windows` directories, not user download folders.
