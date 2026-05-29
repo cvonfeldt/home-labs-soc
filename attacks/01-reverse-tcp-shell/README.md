@@ -67,6 +67,7 @@ index=main source="WinEventLog:Microsoft-Windows-Sysmon/Operational" resume4.pdf
 ![Event ID 1 - Payload Execution](screenshots/homelab2.PNG)
 <br>
 <br>
+<br>
 
 ### Event ID 1 - Meterpreter Spawns cmd.exe
 **Query:**
@@ -81,6 +82,8 @@ index=main source="WinEventLog:Microsoft-Windows-Sysmon/Operational" resume4.pdf
 ![Event ID 1 - cmd.exe spawned](screenshots/Homelab1.PNG)
 <br>
 <br>
+<br>
+
 ### Event ID 3 - Outbound Network Connection
 **Query:**
 ```
@@ -96,6 +99,7 @@ index=main source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=3
 ---
 <br>
 <br>
+<br>
 ## MITRE ATT&CK Mapping
 
 | Technique ID | Technique Name | Tactic | Evidence |
@@ -106,6 +110,7 @@ index=main source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=3
 | T1095 | Non-Application Layer Protocol | Command & Control | Meterpreter uses a custom binary protocol over raw TCP rather than HTTP/HTTPS, confirmed by raw TCP connection in Sysmon EventCode 3 |
 
 ---
+<br>
 
 ## Key Indicators of Compromise (IOCs)
 | Indicator | Value |
@@ -117,6 +122,7 @@ index=main source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=3
 | Suspicious process relationship | `resume4.pdf.exe` → `cmd.exe` |
 
 ---
+<br>
 
 ## Detection Summary
 Sysmon captured the full attack chain:
