@@ -5,7 +5,8 @@ These rules were authored based on confirmed attack behavior identified during h
 All rules follow the [Sigma specification](https://github.com/SigmaHQ/sigma) and can be converted to Splunk SPL, Microsoft Sentinel KQL, or any other SIEM query language using [sigmac](https://github.com/SigmaHQ/sigma/tree/master/tools) or [pySigma](https://github.com/SigmaHQ/pySigma).
  
 ---
- 
+<br>
+
 ## Rule 1 - Executable Spawning Command Shell from User-Writable Directory
  
 **What it detects:** An executable running from a user-writable directory (`Downloads`, `AppData`, `Temp`) spawning `cmd.exe` as a child process. In the Meterpreter investigation, `resume4.pdf.exe` executed from `C:\Users\chan\Downloads\` and immediately spawned `cmd.exe` to establish the reverse shell session.
@@ -59,7 +60,8 @@ level: high
 ```
  
 ---
- 
+<br> 
+
 ## Rule 2 - Outbound Network Connection from User-Writable Directory on Non-Standard Port
  
 **Investigation:** Meterpreter Reverse TCP Shell (Home Lab - 01)
@@ -116,5 +118,6 @@ level: high
 ```
  
 ---
- 
+<br> 
+
 ## The combination of Rule 1 and Rule 2 creates layered detection across two phases of the same attack - execution and network callout - meaning an attacker would need to evade both rules simultaneously to avoid detection entirely.
