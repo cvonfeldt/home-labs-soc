@@ -2,10 +2,11 @@
  
 These rules were authored based on confirmed attack behavior identified during a hands-on home lab simulation of an RDP brute force attack against a domain-joined Windows 10 machine with Active Directory configured on Windows Server 2022. Each rule targets a behavioral indicator observed during the attack rather than static IOCs like specific usernames or IP addresses, making them resilient to attacker modifications between campaigns.
  
-All rules follow the [Sigma specification](https://github.com/SigmaHQ/sigma) and can be converted to Splunk SPL, Microsoft Sentinel KQL, or any other SIEM query language using [sigmac](https://github.com/SigmaHQ/sigma/tree/master/tools) or [pySigma](https://github.com/SigmaHQ/pySigma).
+**All rules follow the [Sigma specification](https://github.com/SigmaHQ/sigma) and can be converted to Splunk SPL, Microsoft Sentinel KQL, or any other SIEM query language using [sigmac](https://github.com/SigmaHQ/sigma/tree/master/tools) or [pySigma](https://github.com/SigmaHQ/pySigma).**
  
 ---
- 
+<br>
+
 ## Rule 1 - RDP Brute Force Followed by Successful Login from Same Source
  
 **What it detects:** Multiple failed login attempts (Event ID 4625) from a single source IP followed by a successful login (Event ID 4624) with Logon Type 10 (Remote Interactive/RDP) from the same source IP within a short timeframe. In the RDP brute force investigation, multiple failed attempts against `jsmart` from `192.168.10.250` (Kali) were followed by a successful RDP session from the same IP after the correct password was found.
@@ -50,7 +51,8 @@ level: high
 ```
  
 ---
- 
+<br> 
+
 ## Rule 2 - New Local Account Created on Domain-Joined Machine
  
 **What it detects:** A new local user account being created (Event ID 4720) on a domain-joined machine outside of standard IT provisioning processes. In the RDP brute force investigation, Atomic Red Team technique T1136.001 was used to create a backdoor local administrator account (`NewLocalUser`) post-compromise, simulating an attacker establishing persistent access after gaining an initial foothold via RDP.
