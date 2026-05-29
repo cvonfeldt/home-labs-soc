@@ -63,6 +63,7 @@ index=main source="WinEventLog:Microsoft-Windows-Sysmon/Operational" resume4.pdf
 - SHA256 hash can be submitted to VirusTotal for further analysis
 
 ![Event ID 1 - Payload Execution](screenshots/homelab2.PNG)
+<br>
 
 ### Event ID 1 - Meterpreter Spawns cmd.exe
 **Query:**
@@ -75,6 +76,7 @@ index=main source="WinEventLog:Microsoft-Windows-Sysmon/Operational" resume4.pdf
 - Suspicious parent/child process relationship is a key detection indicator
 
 ![Event ID 1 - cmd.exe spawned](screenshots/Homelab1.PNG)
+<br>
 
 ### Event ID 3 - Outbound Network Connection
 **Query:**
@@ -89,6 +91,7 @@ index=main source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=3
 ![Event ID 3 - Network Connection](screenshots/homelab3.PNG)
 
 ---
+<br>
 
 ## MITRE ATT&CK Mapping
 
