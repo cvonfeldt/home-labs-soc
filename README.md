@@ -19,6 +19,11 @@ A home lab documenting offensive and defensive security techniques using Sysmon 
 | 01 | Reverse TCP Shell | Kali, Metasploit, msfvenom, Splunk | Complete |
 | 02 | RDP Brute Force & AD Attack | Crowbar, xfreerdp, Atomic Red Team, Splunk | Complete |
 
+
+## Automation & Scripting
+Attack investigations are extended with Python automation where applicable. Each script lives within its relevant attack folder and mirrors real SOC triage workflows — programmatically querying Splunk for attack events and enriching IOCs against external threat intelligence APIs.
+#### See 02-rdp-brute-force/Python_Script_VT_Enrichment/ for an example that queries Splunk for RDP brute force events and automatically enriches attacker IPs against VirusTotal.
+
 ## Detection Engineering
 Each investigation includes vendor-agnostic Sigma detection rules (YAML) authored from confirmed attack behavior observed during analysis. Rules target behavioral indicators rather than static IOCs, making them resilient to attacker modifications between attacks. All rules are convertible to Splunk SPL, Microsoft Sentinel KQL, or any other SIEM using sigmac or pySigma.
 
