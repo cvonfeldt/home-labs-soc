@@ -17,7 +17,7 @@ A home lab documenting offensive and defensive security techniques using Sysmon 
 | # | Attack | Tools Used | Status |
 |---|--------|------------|--------|
 | 01 | Reverse TCP Shell | Kali, Metasploit, msfvenom, Splunk | Complete |
-| 02 | RDP Brute Force & AD Attack | Crowbar, xfreerdp, Atomic Red Team, Splunk | Complete |
+| 02 | RDP Brute Force & AD Attack | Crowbar, xfreerdp, ART, Splunk, Python | Complete |
 
 
 ## Automation & Scripting
