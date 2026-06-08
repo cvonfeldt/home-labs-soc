@@ -21,7 +21,7 @@ A home lab documenting offensive and defensive security techniques using Sysmon 
 
 
 ## Automation & Scripting
-Attack investigations are extended with Python scripting where applicable. Each script lives within its relevant attack folder and mirrors real SOC triage workflows — programmatically querying Splunk for attack events and enriching IOCs against external threat intelligence APIs.
+Attack investigations are extended with Python scripting where applicable. Each script lives within its relevant attack folder and mirrors real SOC triage workflows - programmatically querying Splunk for attack events and enriching IOCs against external threat intelligence APIs.
 #### See 02-rdp-brute-force/Python_Script_VT_Enrichment/ for an example that queries Splunk for RDP brute force events and automatically enriches attacker IPs against VirusTotal.
 
 ## Detection Engineering
