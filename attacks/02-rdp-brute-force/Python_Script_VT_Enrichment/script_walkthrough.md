@@ -1,7 +1,7 @@
 # Script Walkthrough - enrich_ip.py
 
 ## Overview
-This document walks through the logic of `enrich_ip.py` section by section. The script automates the triage workflow for RDP brute force investigations by querying Splunk for failed login events and enriching attacker IPs against VirusTotal.
+This document walks through the logic of `enrich_ip.py` section by section. The script automates the triage workflow for RDP brute force investigations by querying Splunk for failed login events and enriching attacker IPs against VirusTotal. I will document the walkthrough with the thoughtprocess that I had when writing it in the first place.
 
 ---
 <br>
@@ -21,7 +21,9 @@ SPLUNK_USER = "cvonfeldt"
 SPLUNK_PASS = "redacted"
 ```
 
-`requests` handles all HTTP calls to both the Splunk REST API and the VirusTotal API. `urllib3.disable_warnings()` suppresses SSL certificate warnings - Splunk uses a self-signed cert in this lab environment so every HTTPS call would otherwise print a warning. In production, credentials would be pulled from environment variables or a secrets manager rather than hardcoded.
+For the imports, `requests` handles all HTTP calls to both the Splunk REST API and the VirusTotal API. `urllib3.disable_warnings()` suppresses SSL certificate warnings - Splunk uses a self-signed cert in this lab environment so every HTTPS call would otherwise print a warning. In production, credentials would be pulled from environment variables or a secrets manager rather than hardcoded.
+
+For the variables, we want to put our VirusTotal and splunk web API info into variables that we will use in the next part. I will note right now that reading this from the top down it seems a bit out of order, since different functions work at different parts in the main function which is at the bottom.
 
 ---
 <br>
@@ -63,8 +65,8 @@ def query_splunk(search_query):
 Splunk's REST API is asynchronous - you can't just send a query and get results back immediately. The workflow has three steps:
 
 1. **Submit the job** - POST the search query to `/services/search/jobs`. Splunk returns a job ID (`sid`).
-2. **Poll for completion** - repeatedly GET the job status until `dispatchState` returns `DONE`.
-3. **Fetch results** - GET the results using the `sid` from step 1.
+2. **Poll for completion** - repeatedly send GET requests until for job status until `dispatchState` returns `DONE`, so that we know the query has been run and results have been returned fully.
+3. **Fetch results** - GET the query results with "return results" using the `sid` from step 1.
 
 This mirrors exactly what happens in the Splunk web UI when you run a search - it's the same API under the hood.
 
@@ -96,7 +98,7 @@ def enrich_ip(ip):
     }
 ```
 
-Makes a GET request to the VirusTotal v3 IP address endpoint, authenticated via the `x-apikey` header. The response is a deeply nested JSON object - this function drills into `data.attributes` to extract the fields most useful for triage:
+Makes a GET request to the VirusTotal v3 using the IP address we got in the splunk query, authenticated with the `x-apikey` header. The response is a deeply nested JSON object - this function drills into `data.attributes` to extract the fields most useful for triage:
 
 - `as_owner` - the organization that owns the IP block (e.g. DigitalOcean, AWS, known bulletproof hosting)
 - `country` - country of origin
@@ -104,7 +106,7 @@ Makes a GET request to the VirusTotal v3 IP address endpoint, authenticated via 
 - `malicious` - number of security vendors that flagged the IP
 - `suspicious` / `harmless` - additional vendor verdicts for context
 
-Returns `None` if the API call fails, which is handled gracefully in the main function.
+Returns `None` if the API call fails.
 
 ---
 <br>
@@ -116,7 +118,7 @@ def is_private_ip(ip):
     return ip.startswith(("192.168.", "10.", "172.16.", "127.", "-"))
 ```
 
-VirusTotal doesn't have meaningful threat intelligence for RFC 1918 private address ranges or localhost - querying them would just waste API calls. This function filters them out before the enrichment step. The `"-"` check handles null/malformed source addresses that sometimes appear in Windows Security logs when the logon type doesn't include a network source.
+VirusTotal doesn't have meaningful threat intelligence for private IPs - querying them would just waste API calls. This helper function is a boolean that checks whether the brute force attacker IP is private or not.
 
 ---
 <br>
@@ -160,7 +162,7 @@ def main():
         print("-" * 60)
 ```
 
-Orchestrates the full workflow. The SPL query groups failed login events by source IP and sorts by count descending - so the most aggressive brute force sources appear first. For each result it prints the IP and login count, then conditionally enriches public IPs against VirusTotal. The output is formatted to be readable as a triage report.
+Responsible for the full workflow. The SPL query groups failed login events by source IP and sorts by count descending - so the most frequent brute force sources appear first. For each result it prints the IP and login count, then enriches public IPs with VirusTotal API. The output is formatted to be readable as a triage report.
 
 The SPL query used:
 ```
