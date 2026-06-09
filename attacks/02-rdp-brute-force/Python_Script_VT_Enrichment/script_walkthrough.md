@@ -4,6 +4,7 @@
 This document walks through the logic of `enrich_ip.py` section by section. The script automates the triage workflow for RDP brute force investigations by querying Splunk for failed login events and enriching attacker IPs against VirusTotal.
 
 ---
+<br>
 
 ## Imports & Configuration
 
@@ -23,6 +24,7 @@ SPLUNK_PASS = "redacted"
 `requests` handles all HTTP calls to both the Splunk REST API and the VirusTotal API. `urllib3.disable_warnings()` suppresses SSL certificate warnings - Splunk uses a self-signed cert in this lab environment so every HTTPS call would otherwise print a warning. In production, credentials would be pulled from environment variables or a secrets manager rather than hardcoded.
 
 ---
+<br>
 
 ## Splunk Query Function
 
@@ -67,6 +69,7 @@ Splunk's REST API is asynchronous - you can't just send a query and get results 
 This mirrors exactly what happens in the Splunk web UI when you run a search - it's the same API under the hood.
 
 ---
+<br>
 
 ## VirusTotal Enrichment Function
 
@@ -104,6 +107,7 @@ Makes a GET request to the VirusTotal v3 IP address endpoint, authenticated via 
 Returns `None` if the API call fails, which is handled gracefully in the main function.
 
 ---
+<br>
 
 ## Private IP Filter
 
@@ -115,6 +119,7 @@ def is_private_ip(ip):
 VirusTotal doesn't have meaningful threat intelligence for RFC 1918 private address ranges or localhost - querying them would just waste API calls. This function filters them out before the enrichment step. The `"-"` check handles null/malformed source addresses that sometimes appear in Windows Security logs when the logon type doesn't include a network source.
 
 ---
+<br>
 
 ## Main Function
 
