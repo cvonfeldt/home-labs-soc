@@ -4,5 +4,5 @@
 
 #### The combination of Rule 1 and Rule 2 covers two distinct phases of the same attack - initial access via brute force and post-compromise persistence via backdoor account creation - meaning both the entry point and the follow-on activity are detected independently.
  
-## All rules follow the [Sigma specification](https://github.com/SigmaHQ/sigma) and can be converted to Splunk SPL, Microsoft Sentinel KQL, or any other SIEM query language using [sigmac](https://github.com/SigmaHQ/sigma/tree/master/tools) or [pySigma](https://github.com/SigmaHQ/pySigma).**
+## All rules follow the [Sigma specification](https://github.com/SigmaHQ/sigma) and can be converted to Splunk SPL, Microsoft Sentinel KQL, or any other SIEM query language using [sigmac](https://github.com/SigmaHQ/sigma/tree/master/tools) or [pySigma](https://github.com/SigmaHQ/pySigma).
 
