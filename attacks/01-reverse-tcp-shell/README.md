@@ -11,7 +11,7 @@ This documents a simulated attack using a malicious executable disguised as a PD
 | Attacker | Kali Linux | 192.168.56.104 |
 | Target | Windows 10 | 192.168.56.105 |
 
-**Tools Used:** msfvenom, Metasploit (multi/handler), Python HTTP server, Sysmon, Splunk
+### Tools Used: msfvenom, Metasploit (multi/handler), Python HTTP server, Sysmon, Splunk
 
 ---
 <br>
