@@ -13,6 +13,7 @@ This documents a simulated RDP brute force attack against a domain-joined Window
 | SIEM | Ubuntu 22.04 (Splunk) | 192.168.10.10 |
 
 ### Tools Used: Python (scripting), Crowbar, xfreerdp, Splunk, Splunk Universal Forwarder, Sysmon (Olaf Hartong config), Atomic Red Team, Invoke-AtomicRedTeam
+
 ---
 <br> 
 
