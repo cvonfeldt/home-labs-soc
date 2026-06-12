@@ -37,7 +37,6 @@ Installed Splunk Universal Forwarder and Sysmon (Olaf Hartong config) on both Wi
 
 ![Splunk Both Hosts Sending Logs](screenshots/splunk-both-hosts.png)
 
-<br>
 ---
 <br> 
 
