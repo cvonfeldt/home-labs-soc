@@ -3,6 +3,8 @@
 ## Overview
 This documents a simulated attack using a malicious executable disguised as a PDF file. The payload was generated with msfvenom, hosted on a Python HTTP server, and executed on the target Windows 10 VM. A Meterpreter session was established back to the attacker's Kali Linux machine. All activity was detected and logged using Sysmon and Splunk.
 
+All attack techniques are mapped to the MITRE ATT&CK framework end-to-end, and vendor-agnostic Sigma detection rules were authored from confirmed attack behavior observed during the investigation.
+
 ---
 
 ## Lab Environment
