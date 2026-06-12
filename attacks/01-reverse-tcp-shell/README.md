@@ -132,4 +132,4 @@ Sysmon captured the full attack chain:
 2. The file spawned `cmd.exe` - abnormal behavior for a document
 3. An outbound connection was made to the attacker's machine on port 4444
 
-A defender should alert on any executable with a double extension (`.pdf.exe`), missing file metadata, and outbound connections on non-standard ports from user directories.
+**A defender should alert on any executable with a double extension (`.pdf.exe`), missing file metadata, and outbound connections on non-standard ports from user directories.**
