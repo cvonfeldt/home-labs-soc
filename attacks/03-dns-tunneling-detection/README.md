@@ -6,6 +6,8 @@ This documents a simulated DNS tunneling attack using dnscat2 to establish a cov
 authoritative DNS server, with the Windows 10 victim redirected to use Kali as its DNS resolver. DNS query telemetry was captured using Sysmon Event ID 22 
 and forwarded to Splunk for detection engineering.
 
+**All attack techniques are mapped to the MITRE ATT&CK framework end-to-end, and vendor-agnostic Sigma detection rules were authored from confirmed attack behavior observed during the investigation.**
+
 ---
 <br>
 
