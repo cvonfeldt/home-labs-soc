@@ -48,9 +48,8 @@ queries being captured by default.
 ![pic1](screenshots/SysDNS.png)
 
 ### 2. Redirect Windows DNS to Kali
-Redirected Windows 10 DNS resolver to Kali so all DNS queries route 
-through the attacker machine. Standard DNS change via GUI reverted due to 
-domain policy, so applied via PowerShell:
+Redirected Windows 10 DNS resolver to Kali so all DNS queries route through the attacker machine. Standard DNS change via GUI reverted due to domain policy, so applied via PowerShell:
+
 ```powershell
 $adapter = Get-NetAdapter | Where-Object {$_.Status -eq "Up"}
 Set-DnsClientServerAddress -InterfaceIndex $adapter.InterfaceIndex `
@@ -78,8 +77,10 @@ Server listening and ready to receive tunneled DNS queries.
 ### Note on dnscat2 Client
 The lab originally intended to use the dnscat2 Windows client to establish a full C2 tunnel. The dnscat2 server was successfully configured on Kali, but ran into errors cofiguring dns client on windows. I tried downloading straight to windows, but the file was linx-compiled binary so windows dind't know what to do with it. So I tried cross-compiling the Windows client from source using mingw-w64 but that produced compilation errors due to type conflicts and missing headers in the dnscat2 codebase:
 
+```bash
 ./libs/select_group.c: error: passing argument 4 of 'ReadFile' from incompatible pointer type
 ./tunnel_drivers/driver_dns.c: error: conflicting types for 'driver_dns_destroy'
+```
 
 Instead of spending time resolving upstream source code issues unrelated to detection engineering, I used a PowerShell script to replicate the exact traffic pattern dnscat2 would generate - high volume DNS queries with high entropy random subdomains to a single parent domain. From a Sysmon/Splunk perspective the telemetry comes through exactly the same, as the detection targets the behavioral pattern of the traffic rather than the specific tool generating it.
 
@@ -97,7 +98,7 @@ while($true) {
 }
 ```
 
-Script generated 32-character random alphanumeric subdomains at 500ms intervals — mimicking real dnscat2 encoded payload traffic. Sysmon Event ID 22 captured every query in real time.
+Script generated 32-character random alphanumeric subdomains at 500ms intervals - mimicking real dnscat2 encoded payload traffic. Sysmon Event ID 22 captured every query in real time.
 
 ![pic1](screenshots/script.png)
 ![pic1](screenshots/sysLogging.png)
@@ -107,8 +108,64 @@ Script generated 32-character random alphanumeric subdomains at 500ms intervals 
 
 ## Detection
 
----
-<br>
+### 1. Confirm DNS Tunneling Traffic in Splunk
+
+```spl
+index=endpoint sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" 
+"<EventID>22</EventID>" "tunnel.evil.com"
+```
+
+Confirmed 2,913 DNS query events for tunnel.evil.com captured in Splunk - all fired by powershell.exe from the victim machine.
+
+![pic1](screenshots/dnssplunk.png)
+
+### 2. Volume Detection - High Query Count to Single Domain
+
+```spl
+index=endpoint sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" "<EventID>22</EventID>"
+| rex field=_raw "<Data Name='QueryName'>(?<query_name>[^<]+)</Data>"
+| rex field=query_name "(?<parent_domain>[^.]+.[^.]+$)"
+| stats count by parent_domain
+| where count > 100
+| sort - count
+```
+
+What it shows:
+- tunnel.evil.com generating anomalous query volume far exceeding the 100 query threshold
+- Legitimate domains generate significantly lower query counts
+- High volume to a single domain is a primary behavioral indicator of DNS tunneling
+
+![pic1](screenshots/rule.png)
+
+**Note: Event count increased from 2,913 to 3,108 between queries as the PowerShell simulation continued generating DNS traffic in background during the investigation.**
+
+### 3. Entropy Detection - High Entropy Subdomain Length
+Detection threshold was initially tested at 15 characters before being raised to 20 to reduce false positives from legitimate long subdomains.
+
+```spl
+index=endpoint sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" "<EventID>22</EventID>"
+| rex field=_raw "<Data Name='QueryName'>(?<query_name>[^<]+)</Data>"
+| rex field=query_name "(?<parent_domain>[^.]+.[^.]+$)"
+| rex field=query_name "(?<subdomain>.+)(?=.[^.]+.[^.]+$)"
+| eval subdomain_length=len(subdomain)
+| stats avg(subdomain_length) as avg_length, count by parent_domain
+| where avg_length > 15
+| sort - avg_length
+```
+
+![pic1](screenshots/15.png)
+
+Threshold raised to 20 to account for legitimate CDN and analytics subdomains that may exceed 15 characters:
+
+```spl
+| where avg_length > 20
+```
+![pic1](screenshots/20.png)
+
+What it shows:
+- tunnel.evil.com averaging 39 character subdomains - far above the 20 character threshold
+- Legitimate domains have short human-readable subdomains (mail, cdn, www) averaging well under 20 characters
+- High average subdomain length is a strong indicator of base64 or hex-encoded data being transmitted through DNS queries
 
 ## MITRE ATT&CK Mapping
 [in progress]
