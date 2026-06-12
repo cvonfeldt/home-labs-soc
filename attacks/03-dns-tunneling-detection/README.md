@@ -167,6 +167,9 @@ What it shows:
 - Legitimate domains have short human-readable subdomains (mail, cdn, www) averaging well under 20 characters
 - High average subdomain length is a strong indicator of base64 or hex-encoded data being transmitted through DNS queries
 
+---
+<br>
+
 ## MITRE ATT&CK Mapping
 [in progress]
 
