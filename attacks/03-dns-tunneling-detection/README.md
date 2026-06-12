@@ -45,7 +45,7 @@ sysmon64 -s
 Verified DnsQuery logging enabled with ruledefault="exclude" - all DNS 
 queries being captured by default.
 
-[pic1](screenshots/SysDNS.png)
+![pic1](screenshots/SysDNS.png)
 
 ### 2. Redirect Windows DNS to Kali
 Redirected Windows 10 DNS resolver to Kali so all DNS queries route 
@@ -58,7 +58,7 @@ Set-DnsClientServerAddress -InterfaceIndex $adapter.InterfaceIndex `
 ```
 Verified with nslookup - Server: 192.168.10.250 confirmed.
 
-[pic1](screenshots/CorrectDNS.png)
+![pic1](screenshots/CorrectDNS.png)
 
 ### 3. Start dnscat2 Server on Kali
 Installed and started dnscat2 on Kali listening on port 53:
@@ -68,7 +68,7 @@ sudo ruby dnscat2.rb --dns "host=0.0.0.0,port=53" --no-cache
 ```
 Server listening and ready to receive tunneled DNS queries.
 
-[pic1](screenshots/dnscat.png)
+![pic1](screenshots/dnscat.png)
 
 ---
 <br>
