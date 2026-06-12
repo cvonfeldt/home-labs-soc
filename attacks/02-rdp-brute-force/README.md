@@ -145,4 +145,4 @@ Splunk captured the full attack chain:
 - New local administrator account created post-compromise (4720)
 - Suspicious PowerShell and process activity captured by Sysmon
 
-A defender should alert on multiple 4625 events from the same source IP in a short timeframe, especially followed by a 4624. Any new local account creation (4720) on a domain-joined machine outside of standard IT processes should also be investigated immediately.
+**A defender should alert on multiple 4625 events from the same source IP in a short timeframe, especially followed by a 4624. Any new local account creation (4720) on a domain-joined machine outside of standard IT processes should also be investigated immediately.**
