@@ -16,9 +16,9 @@ This documents a simulated RDP brute force attack against a domain-joined Window
 ---
 <br> 
 
-## Attack Steps
+## Environment Setup
 
-### 1. Active Directory Setup
+### 1. Active Directory
 Configured Windows Server 2022 as a domain controller for mydfir.local. Created organizational units (IT, HR) and domain users including jsmart.
 
 ![Active Directory OUs and Users](screenshots/ad-users-and-computers.png)
@@ -37,9 +37,13 @@ Installed Splunk Universal Forwarder and Sysmon (Olaf Hartong config) on both Wi
 
 ![Splunk Both Hosts Sending Logs](screenshots/splunk-both-hosts.png)
 
+<br>
+---
 <br> 
 
-### 4. RDP Brute Force
+## Environment Setup
+
+### 1. RDP Brute Force
 Enabled RDP on the Windows 10 target and added the domain user jsmart to the Remote Desktop Users group. From Kali, simulated a brute force attack by attempting multiple incorrect passwords followed by the correct one (attempted crowbar bruteforce attack but ran into compatibility issues, so simulated with xfreerdp):
 
 ```bash
@@ -54,7 +58,7 @@ xfreerdp /v:192.168.10.5 /u:jsmart /p:<correct password> /cert:ignore
 
 <br> 
 
-### 5. Atomic Red Team
+### 2. Atomic Red Team
 Installed Invoke-AtomicRedTeam on Windows 10 and ran the following MITRE ATT&CK techniques:
 
 - **T1136.001** - Create Local Account: created backdoor admin account (NewLocalUser)
@@ -66,7 +70,7 @@ Installed Invoke-AtomicRedTeam on Windows 10 and ran the following MITRE ATT&CK 
 
 ## Detection
 
-### RDP Brute Force - Failed Logins
+### 1. RDP Brute Force - Failed Logins
 Query:index=endpoint EventCode=4625
 
 What it shows:
@@ -77,7 +81,7 @@ What it shows:
 
 <br> 
 
-### RDP Brute Force - Successful Login
+### 2. RDP Brute Force - Successful Login
 Query: index=endpoint EventCode=4624 jsmart
 
 What it shows:
@@ -89,7 +93,7 @@ What it shows:
 <br> 
 <br> 
 
-### Atomic Red Team - User Account Created
+### 3. Atomic Red Team - User Account Created
 Query: index=endpoint EventCode=4720
 
 What it shows:
@@ -101,7 +105,7 @@ What it shows:
 <br> 
 <br> 
 
-### Atomic Red Team - PowerShell Execution
+### 4. Atomic Red Team - PowerShell Execution
 Query: index=endpoint source="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
 
 What it shows:
