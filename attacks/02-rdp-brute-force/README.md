@@ -1,7 +1,9 @@
 # 02 - RDP Brute Force & Active Directory Attack Detection
 
 ## Overview
-This documents a simulated RDP brute force attack against a domain-joined Windows 10 machine using a Kali Linux attacker VM. Active Directory was configured on Windows Server 2022 as the domain controller. A password list was used to brute force RDP credentials for a domain user. Atomic Red Team was also used to simulate additional post-compromise techniques. All activity was detected and logged using Sysmon and Splunk.
+This documents a simulated RDP brute force attack against a domain-joined Windows 10 machine using a Kali Linux attacker VM. Active Directory was configured on Windows Server 2022 as the domain controller. A password list was used to brute force RDP credentials for a domain user, then Atomic Red Team was also used to simulate additional post-compromise techniques. All activity was detected and logged using Sysmon and Splunk. The investigation was extended with a Python script that automates the triage workflow - querying Splunk for failed login events, extracting source IPs, and enriching them against the VirusTotal API to produce a formatted threat intelligence report.
+
+All attack techniques are mapped to the MITRE ATT&CK framework end-to-end, and vendor-agnostic Sigma detection rules were authored from confirmed attack behavior observed during the investigation.
 
 ## Lab Environment
 
