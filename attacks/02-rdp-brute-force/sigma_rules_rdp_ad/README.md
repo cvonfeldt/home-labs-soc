@@ -1,7 +1,6 @@
-# Sigma Detection Rules - DNS Tunneling Detection
- 
-#### This rule was authored based on confirmed attack behavior identified during a hands-on home lab simulation of DNS-based C2 communication using dnscat2 and PowerShell-generated DNS tunneling traffic against a Windows 10 machine monitored by Sysmon. The rule targets behavioral indicators observed during the attack rather than static IOCs like specific domain names or IP addresses, making it resilient to attacker modifications between campaigns.
+# Sigma Detection Rules - RDP Brute Force & Active Directory Attack
 
-#### The rule detects high entropy subdomain patterns in DNS queries - the core characteristic of DNS tunneling regardless of which tool or domain an attacker uses. This means the detection fires on the technique itself (T1071.004) rather than any specific implementation of it.
- 
+#### These rules were authored based on confirmed attack behavior identified during a hands-on home lab simulation of an RDP brute force attack against a domain-joined Windows 10 machine with Active Directory configured on Windows Server 2022. Each rule targets a behavioral indicator observed during the attack rather than static IOCs like specific usernames or IP addresses, making them resilient to attacker modifications between campaigns.
+#### The combination of Rule 1 and Rule 2 covers two distinct phases of the same attack - initial access via brute force and post-compromise persistence via backdoor account creation - meaning both the entry point and the follow-on activity are detected independently.
+
 ## All rules follow the [Sigma specification](https://github.com/SigmaHQ/sigma) and can be converted to Splunk SPL, Microsoft Sentinel KQL, or any other SIEM query language using [sigmac](https://github.com/SigmaHQ/sigma/tree/master/tools) or [pySigma](https://github.com/SigmaHQ/pySigma).
