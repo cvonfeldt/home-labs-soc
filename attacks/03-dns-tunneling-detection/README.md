@@ -42,10 +42,10 @@ Confirmed Sysmon was running and Event ID 22 (DNS queries) was active:
 Get-Service sysmon64
 sysmon64 -s
 ```
-Verified DnsQuery logging enabled with ruledefault="exclude" — all DNS 
+Verified DnsQuery logging enabled with ruledefault="exclude" - all DNS 
 queries being captured by default.
 
-[screenshot]
+[pic1](screenshots/SysDNS.png)
 
 ### 2. Redirect Windows DNS to Kali
 Redirected Windows 10 DNS resolver to Kali so all DNS queries route 
@@ -56,9 +56,9 @@ $adapter = Get-NetAdapter | Where-Object {$_.Status -eq "Up"}
 Set-DnsClientServerAddress -InterfaceIndex $adapter.InterfaceIndex `
 -ServerAddresses "192.168.10.250"
 ```
-Verified with nslookup — Server: 192.168.10.250 confirmed.
+Verified with nslookup - Server: 192.168.10.250 confirmed.
 
-[screenshot]
+[pic1](screenshots/CorrectDNS.png)
 
 ### 3. Start dnscat2 Server on Kali
 Installed and started dnscat2 on Kali listening on port 53:
@@ -68,7 +68,7 @@ sudo ruby dnscat2.rb --dns "host=0.0.0.0,port=53" --no-cache
 ```
 Server listening and ready to receive tunneled DNS queries.
 
-[screenshot]
+[pic1](screenshots/dnscat.png)
 
 ---
 <br>
